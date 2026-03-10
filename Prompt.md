@@ -11,42 +11,47 @@ Determinism levers implemented in Python (no Codex software development kit):
 
 Recommended setup: 6 agents
 
-1. Orchestrator
- Role: Receives the context prompt, decomposes the work, assigns tasks, tracks dependencies, merges
- outputs, and decides when to re-plan.
- Why: This is the control plane. Without it, concurrency becomes chaos.
-2. Context Analyst
- Role: Interprets the incoming prompt, extracts domain, constraints, success criteria, assumptions, and
- missing information.
- Why: Financial, educational, and business software each have different requirements. This agent normalizes
- that context before execution.
-3. Architect
- Role: Defines system boundaries, module structure, interfaces, data contracts, and task graph for the other
- agents.
- Why: Modularity depends on clear interfaces. This agent prevents overlapping work and tight coupling.
-4. Backend Producer
- Role: Builds services, APIs, business logic, workflows, data access, and integration points.
- Why: Most software products need a durable execution layer.
-5. Frontend Producer
- Role: Builds UI, user flows, forms, dashboards, and client-side state handling.
- Why: Keeps presentation concerns isolated from backend work.
-6. QA / Verification Agent
- Role: Validates outputs, runs tests, checks acceptance criteria, looks for regressions, and flags
- inconsistencies between modules.
+- Orchestrator
+Role: Receives the context prompt, decomposes the work, assigns tasks, tracks dependencies, merges outputs, and decides when to re-plan.
+Why: This is the control plane. Without it, concurrency becomes chaos.
+- Context Analyst
+Role: Interprets the incoming prompt, extracts domain, constraints, success criteria, assumptions, and missing information.
+Why: Financial, educational, and business software each have different requirements. This agent normalizes that context before execution.
+- Architect
+ Role: Defines system boundaries, module structure, interfaces, data contracts, and task graph for the other agents.
+Why: Modularity depends on clear interfaces. This agent prevents overlapping work and tight coupling.
+- Backend Producer
+Role: Builds services, APIs, business logic, workflows, data access, and integration points.
+Why: Most software products need a durable execution layer.
+- Frontend Producer
+Role: Builds UI, user flows, forms, dashboards, and client-side state handling.
+Why: Keeps presentation concerns isolated from backend work.
+- QA / Verification Agent
+Role: Validates outputs, runs tests, checks acceptance criteria, looks for regressions, and flags inconsistencies between modules.
  
 Use a hub-and-spoke model. Almost everything should report to the orchestrator. That is the cleanest structure.
  
 Simple flow
 
-1. External prompt enters system
-2. context_analyst produces structured requirements
-3. orchestrator creates tasks
-4. architect defines interfaces
-5. backend_producer and frontend_producer work in parallel
-6. qa_verifier reviews outputs
+- External prompt enters system
+- context_analyst produces structured requirements
+- orchestrator creates tasks
+- architect defines interfaces
+- backend_producer and frontend_producer work in parallel
+- qa_verifier reviews outputs
 
+Messages
 
 - Messages for coordination
 - Shared artifacts for deliverables
 - Orchestrator as the control hub
 - Limited direct communication for tightly scoped collaboration
+
+Each agent should follow these rules:
+
+- Never assume another agent saw a prior conversation unless it is in shared state.
+- Every important decision must be written to a decision log.
+- Every artifact must have a version.
+- Every task must have an owner.
+- Every blocker must go to the orchestrator.
+- Agents should not overwrite shared artifacts without ownership or lock rules.
