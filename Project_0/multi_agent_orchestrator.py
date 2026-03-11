@@ -42,6 +42,7 @@ APPROVAL = 'approval_policy="never"'
 WORKSPACE = Path.cwd()
 CODEX_TIMEOUT_SECONDS = int(os.getenv("CODEX_TIMEOUT_SECONDS", "1800"))
 MAX_CONCURRENCY = int(os.getenv("ORCHESTRATOR_MAX_CONCURRENCY", "3"))
+VERBOSE = False
 
 STATE_DIR = WORKSPACE / ".multi_agent_orchestrator"
 WORKSPACES_DIR = STATE_DIR / "workspaces"
@@ -101,6 +102,11 @@ class WorkerExecutionResult:
     modified: List[str]
     deleted: List[str]
     merged_files: List[str]
+
+
+def log_verbose(message: str) -> None:
+    if VERBOSE:
+        print(f"[verbose] {message}")
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -791,6 +797,7 @@ async def run_codex(
     *,
     cwd: Optional[Path] = None,
     extra_args: Optional[List[str]] = None,
+    label: str = "Codex",
 ) -> CodexRunResult:
     cmd = [
         "codex",
@@ -815,6 +822,8 @@ async def run_codex(
     }
 
     start = time.monotonic()
+    log_verbose(f"{label}: starting codex subprocess in {run_cwd}")
+    log_verbose(f"{label}: command={' '.join(shlex.quote(x) for x in cmd)}")
     try:
         proc = await asyncio.create_subprocess_exec(
             *cmd,
@@ -834,6 +843,7 @@ async def run_codex(
     stderr_chunks: List[str] = []
 
     async def write_prompt() -> None:
+        log_verbose(f"{label}: writing prompt ({len(prompt)} chars)")
         proc.stdin.write(prompt.encode("utf-8"))
         await proc.stdin.drain()
         proc.stdin.close()
@@ -849,18 +859,25 @@ async def run_codex(
                 event = json.loads(line)
             except json.JSONDecodeError:
                 events.append({"type": "invalid_json_line", "raw": line})
+                log_verbose(f"{label}: stdout non-json line: {line[:240]}")
                 continue
             events.append(event)
+            event_type = event.get("type", "<unknown>")
+            if event_type in {"turn.started", "turn.completed", "item.started", "item.completed", "error"}:
+                log_verbose(f"{label}: event={event_type}")
             if event.get("type") == "item.completed":
                 item = event.get("item", {})
                 if item.get("type") == "agent_message":
                     text = str(item.get("text", "")).strip()
                     if text:
                         assistant_texts.append(text)
+                        log_verbose(f"{label}: captured agent_message ({len(text)} chars)")
 
     async def read_stderr() -> None:
         async for raw_line in proc.stderr:
-            stderr_chunks.append(raw_line.decode("utf-8", errors="replace"))
+            chunk = raw_line.decode("utf-8", errors="replace")
+            stderr_chunks.append(chunk)
+            log_verbose(f"{label}: stderr={chunk.rstrip()[:240]}")
 
     async def run_all() -> int:
         await asyncio.gather(write_prompt(), read_stdout(), read_stderr())
@@ -872,12 +889,14 @@ async def run_codex(
         proc.kill()
         with contextlib.suppress(Exception):
             await proc.wait()
+        log_verbose(f"{label}: timed out after {CODEX_TIMEOUT_SECONDS}s")
         raise OrchestratorError(
             f"codex timed out after {CODEX_TIMEOUT_SECONDS}s: {' '.join(shlex.quote(x) for x in cmd)}"
         ) from exc
 
     stderr_text = "".join(stderr_chunks)
     duration_s = time.monotonic() - start
+    log_verbose(f"{label}: finished rc={returncode} duration={duration_s:.2f}s events={len(events)}")
 
     if returncode != 0:
         if "login" in stderr_text.lower() or "auth" in stderr_text.lower():
@@ -931,6 +950,7 @@ def merge_worker_outputs(
             continue
         dst = WORKSPACE / rel
         copy_file(src, dst)
+        log_verbose(f"{role.name}: merged {rel}")
         merged.append(rel)
     return merged
 
@@ -1063,11 +1083,21 @@ async def run_isolated_worker(role: WorkerRole, prompt: str) -> WorkerExecutionR
     worker_id = f"{int(time.time())}-{uuid.uuid4().hex[:8]}"
     stage_dir = WORKSPACES_DIR / f"{role.name.lower().replace(' ', '_')}-{worker_id}"
     copy_workspace(WORKSPACE, stage_dir)
+    log_verbose(f"{role.name}: staged workspace at {stage_dir}")
+    log_verbose(f"{role.name}: owned_paths={list(role.owned_paths)}")
+    log_verbose(f"{role.name}: required_outputs={list(role.required_outputs)}")
 
     before = snapshot_workspace(stage_dir)
-    result = await run_codex(prompt, cwd=stage_dir)
+    result = await run_codex(prompt, cwd=stage_dir, label=role.name)
     after = snapshot_workspace(stage_dir)
     diff = diff_snapshots(before, after)
+    log_verbose(
+        f"{role.name}: diff created={len(diff['created'])} modified={len(diff['modified'])} deleted={len(diff['deleted'])}"
+    )
+    if VERBOSE and diff["created"]:
+        log_verbose(f"{role.name}: created sample={diff['created'][:12]}")
+    if VERBOSE and diff["modified"]:
+        log_verbose(f"{role.name}: modified sample={diff['modified'][:12]}")
 
     validate_footer(result)
     validate_worker_diff(role, diff)
@@ -1079,6 +1109,7 @@ async def run_isolated_worker(role: WorkerRole, prompt: str) -> WorkerExecutionR
     merged_files = merge_worker_outputs(role, stage_dir, diff["created"], diff["modified"])
     if not merged_files:
         raise OrchestratorError(f"[{role.name}] No owned files were produced or modified.")
+    log_verbose(f"{role.name}: merged_files={merged_files}")
 
     return WorkerExecutionResult(
         role=role,
@@ -1094,6 +1125,9 @@ def report_worker_result(execution: WorkerExecutionResult) -> None:
     usage = execution.result.usage.get("output_tokens", "?")
     files = ", ".join(execution.merged_files[:6])
     print(f"[{execution.role.name}] merged={len(execution.merged_files)} output_tokens={usage} files={files}")
+    log_verbose(
+        f"{execution.role.name}: duration={execution.result.duration_s:.2f}s returncode={execution.result.returncode}"
+    )
 
 
 async def run_parallel_roles(jobs: List[Tuple[WorkerRole, str]], max_concurrency: int) -> List[WorkerExecutionResult]:
@@ -1128,16 +1162,23 @@ def build_run_report(plan: Dict[str, Any], results: List[WorkerExecutionResult])
 async def step_plan(spec_text: str) -> Tuple[Dict[str, Any], List[WorkerRole]]:
     schema = plan_schema()
     write_text(PLAN_SCHEMA_JSON, json.dumps(schema, indent=2))
-    result = await run_codex(planner_prompt(spec_text), extra_args=["--output-schema", str(PLAN_SCHEMA_JSON)])
+    log_verbose("Planner: generating plan schema and requesting initial plan")
+    result = await run_codex(
+        planner_prompt(spec_text),
+        extra_args=["--output-schema", str(PLAN_SCHEMA_JSON)],
+        label="Planner",
+    )
     plan_text = result.final_text
 
     try:
         plan = json.loads(plan_text)
         roles = validate_plan_obj(plan)
     except Exception as exc:
+        log_verbose(f"Planner: initial plan invalid, running repair pass: {exc}")
         repair = await run_codex(
             plan_repair_prompt(spec_text, plan_text, str(exc)),
             extra_args=["--output-schema", str(PLAN_SCHEMA_JSON)],
+            label="Planner Repair",
         )
         plan_text = repair.final_text
         plan = json.loads(plan_text)
@@ -1152,12 +1193,19 @@ async def main() -> None:
     parser = argparse.ArgumentParser(description="Production-grade Codex CLI multi-agent orchestrator.")
     parser.add_argument("--spec", default=str(SPEC_FILE_DEFAULT), help="Path to project_specification.md")
     parser.add_argument("--max-concurrency", type=int, default=MAX_CONCURRENCY, help="Maximum concurrent workers")
+    parser.add_argument("--verbose", action="store_true", help="Print Codex worker lifecycle, event, stderr, and merge details")
     args = parser.parse_args()
+
+    global VERBOSE
+    VERBOSE = args.verbose
 
     spec_path = Path(args.spec).resolve()
     require_nonempty_text(spec_path, min_chars=80)
 
     ensure_dirs()
+    log_verbose(f"Workspace={WORKSPACE}")
+    log_verbose(f"Spec path={spec_path}")
+    log_verbose(f"Max concurrency={max(1, args.max_concurrency)}")
 
     spec_text = summarize_text_block(spec_path, limit=16000)
     write_manifest("Initial manifest before planning")
