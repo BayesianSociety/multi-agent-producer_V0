@@ -42,6 +42,7 @@ APPROVAL = 'approval_policy="never"'
 WORKSPACE = Path.cwd()
 CODEX_TIMEOUT_SECONDS = int(os.getenv("CODEX_TIMEOUT_SECONDS", "1800"))
 MAX_CONCURRENCY = int(os.getenv("ORCHESTRATOR_MAX_CONCURRENCY", "3"))
+MAX_WORKER_ATTEMPTS = int(os.getenv("ORCHESTRATOR_WORKER_ATTEMPTS", "2"))
 VERBOSE = False
 
 STATE_DIR = WORKSPACE / ".multi_agent_orchestrator"
@@ -107,6 +108,16 @@ class WorkerExecutionResult:
 def log_verbose(message: str) -> None:
     if VERBOSE:
         print(f"[verbose] {message}")
+
+
+def is_retryable_codex_error(message: str) -> bool:
+    normalized = message.lower()
+    retryable_markers = (
+        "custom tool call output is missing",
+        "codex runtime instability",
+        "codex timed out",
+    )
+    return any(marker in normalized for marker in retryable_markers)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -460,7 +471,8 @@ Planning rules:
 - Always set components.docs = true.
 - Put implementation roles that can safely run together in the same parallel_group.
 - Do not include product/docs/test planning roles in implementation_roles; those are handled by the orchestrator.
-- Include validation_keywords that provide lightweight evidence of the intended output.
+- Set validation_keywords to [] unless there are exact, literal strings that must appear in owned output files.
+- validation_keywords are advisory only and should never be slogans, feature descriptions, or paraphrases.
 
 Project specification:
 {spec_text}
@@ -841,6 +853,7 @@ async def run_codex(
     events: List[Dict[str, Any]] = []
     assistant_texts: List[str] = []
     stderr_chunks: List[str] = []
+    transient_runtime_errors = 0
 
     async def write_prompt() -> None:
         log_verbose(f"{label}: writing prompt ({len(prompt)} chars)")
@@ -874,19 +887,38 @@ async def run_codex(
                         log_verbose(f"{label}: captured agent_message ({len(text)} chars)")
 
     async def read_stderr() -> None:
+        nonlocal transient_runtime_errors
         async for raw_line in proc.stderr:
             chunk = raw_line.decode("utf-8", errors="replace")
             stderr_chunks.append(chunk)
             log_verbose(f"{label}: stderr={chunk.rstrip()[:240]}")
+            if "custom tool call output is missing" in chunk.lower():
+                transient_runtime_errors += 1
+                if transient_runtime_errors >= 3 and proc.returncode is None:
+                    log_verbose(f"{label}: killing subprocess after repeated custom tool runtime errors")
+                    proc.kill()
+
+    stdout_task = asyncio.create_task(read_stdout())
+    stderr_task = asyncio.create_task(read_stderr())
+    write_task = asyncio.create_task(write_prompt())
 
     async def run_all() -> int:
-        await asyncio.gather(write_prompt(), read_stdout(), read_stderr())
-        return await proc.wait()
+        try:
+            await asyncio.gather(write_task, stdout_task, stderr_task)
+            return await proc.wait()
+        finally:
+            for task in (write_task, stdout_task, stderr_task):
+                if not task.done():
+                    task.cancel()
+            for task in (write_task, stdout_task, stderr_task):
+                with contextlib.suppress(BaseException):
+                    await task
 
     try:
         returncode = await asyncio.wait_for(run_all(), timeout=CODEX_TIMEOUT_SECONDS)
     except asyncio.TimeoutError as exc:
-        proc.kill()
+        if proc.returncode is None:
+            proc.kill()
         with contextlib.suppress(Exception):
             await proc.wait()
         log_verbose(f"{label}: timed out after {CODEX_TIMEOUT_SECONDS}s")
@@ -897,6 +929,9 @@ async def run_codex(
     stderr_text = "".join(stderr_chunks)
     duration_s = time.monotonic() - start
     log_verbose(f"{label}: finished rc={returncode} duration={duration_s:.2f}s events={len(events)}")
+
+    if "custom tool call output is missing" in stderr_text.lower():
+        raise OrchestratorError(f"codex runtime instability: {stderr_text.strip()}")
 
     if returncode != 0:
         if "login" in stderr_text.lower() or "auth" in stderr_text.lower():
@@ -1010,36 +1045,134 @@ def keyword_evidence_present(needle: str, haystack: str) -> bool:
     if not tokens:
         return True
 
-    present = sum(1 for tok in tokens if tok in normalized_haystack)
+    haystack_tokens = normalized_haystack.split()
+
+    def token_forms(token: str) -> List[str]:
+        forms = {token}
+        if token.endswith("ies") and len(token) > 3:
+            forms.add(token[:-3] + "y")
+        if token.endswith("es") and len(token) > 3:
+            forms.add(token[:-2])
+        if token.endswith("s") and len(token) > 3:
+            forms.add(token[:-1])
+        if token.endswith("ing") and len(token) > 5:
+            forms.add(token[:-3])
+        return sorted(forms)
+
+    def token_present(token: str) -> bool:
+        forms = token_forms(token)
+        for candidate in haystack_tokens:
+            for form in forms:
+                if candidate == form or candidate.startswith(form) or form.startswith(candidate):
+                    return True
+        return False
+
+    present = sum(1 for tok in tokens if token_present(tok))
     threshold = len(tokens) if len(tokens) <= 2 else max(2, len(tokens) - 1)
     return present >= threshold
 
 
-def validate_role_outputs(role: WorkerRole) -> None:
+def validate_role_outputs(role: WorkerRole, test_contract_text: str) -> None:
     collected_text = []
+    required_paths: List[Path] = []
     for rel in role.required_outputs:
         path = WORKSPACE / rel
         require_nonempty_text(path, min_chars=40)
+        required_paths.append(path)
         if path.suffix.lower() in {".md", ".txt", ".html", ".css", ".js", ".ts", ".tsx", ".jsx", ".json", ".yml", ".yaml", ".sh", ".py"}:
             collected_text.append(read_text(path).lower())
 
     merged_text = "\n".join(collected_text)
-    for keyword in role.validation_keywords:
-        if not keyword_evidence_present(keyword, merged_text):
+    role_name = role.name.lower()
+    suffixes = {path.suffix.lower() for path in required_paths}
+    rel_outputs = {path.relative_to(WORKSPACE).as_posix() for path in required_paths}
+
+    if any(token in role_name for token in ("frontend", "ui", "mobile")):
+        expected_ui_suffixes = {".html", ".css", ".js", ".jsx", ".ts", ".tsx"}
+        if not suffixes & expected_ui_suffixes:
             raise OrchestratorError(
-                f"[{role.name}] Validation failed: expected keyword '{keyword}' in required outputs."
+                f"[{role.name}] Validation failed: expected at least one UI/code asset among required outputs."
             )
+
+    if any(token in role_name for token in ("backend", "api", "server")):
+        expected_backend_suffixes = {".js", ".ts", ".json", ".sql", ".yml", ".yaml"}
+        if not suffixes & expected_backend_suffixes:
+            raise OrchestratorError(
+                f"[{role.name}] Validation failed: expected backend/code assets among required outputs."
+            )
+
+        owns_http_surface = any(
+            rel.startswith("backend/src/routes/")
+            or rel.startswith("backend/src/server.")
+            or rel.startswith("backend/src/controllers/")
+            or rel.startswith("backend/src/http/")
+            for rel in rel_outputs
+        )
+        endpoints = extract_http_endpoints(test_contract_text)
+        if owns_http_surface and endpoints and merged_text:
+            route_signatures = set(extract_route_signatures(merged_text))
+            missing_paths = [
+                path
+                for method, path in endpoints
+                if (method, path) not in route_signatures and not any(sig_path == path for _sig_method, sig_path in route_signatures)
+            ]
+            if missing_paths:
+                preview = ", ".join(missing_paths[:6])
+                raise OrchestratorError(
+                    f"[{role.name}] Validation failed: backend outputs do not define contract path(s): {preview}"
+                )
+
+    if any(rel.startswith("backend/") for rel in rel_outputs) and any(path.endswith(".sql") for path in rel_outputs):
+        if "create table" not in merged_text and "alter table" not in merged_text:
+            raise OrchestratorError(
+                f"[{role.name}] Validation failed: expected SQL schema content in backend/database outputs."
+            )
+
+    if role.validation_keywords and VERBOSE:
+        missing_keywords = [kw for kw in role.validation_keywords if not keyword_evidence_present(kw, merged_text)]
+        if missing_keywords:
+            log_verbose(f"{role.name}: advisory validation_keywords not evidenced: {missing_keywords[:8]}")
 
 
 def extract_http_endpoints(test_contract: str) -> List[Tuple[str, str]]:
-    matches = re.findall(r"(?im)\b(GET|POST|PUT|PATCH|DELETE)\s+(/[^ \t\r\n]+)", test_contract)
-    endpoints = {(method.upper(), path) for method, path in matches}
+    matches = re.findall(r"(?im)\b(GET|POST|PUT|PATCH|DELETE)\s+(`?/[^ \t\r\n`]+`?)", test_contract)
+    endpoints = {(method.upper(), normalize_contract_path(path)) for method, path in matches}
     return sorted(endpoints, key=lambda item: (item[0], item[1]))
 
 
 def extract_commands(test_contract: str) -> List[str]:
     matches = re.findall(r"(?im)^\s*COMMAND\s+(.+?)\s*$", test_contract)
     return sorted({match.strip() for match in matches if match.strip()})
+
+
+def normalize_contract_path(path: str) -> str:
+    cleaned = path.strip().strip("`").strip().rstrip("`").rstrip(".,;:")
+    if "?" in cleaned:
+        cleaned = cleaned.split("?", 1)[0]
+    cleaned = re.sub(r"/:([A-Za-z_][A-Za-z0-9_]*)", r"/{param}", cleaned)
+    cleaned = re.sub(r"/\.\.\.$", "", cleaned)
+    return cleaned
+
+
+def extract_route_signatures(text: str) -> List[Tuple[str, str]]:
+    signatures: set[Tuple[str, str]] = set()
+    mount_prefixes: List[str] = []
+
+    for prefix in re.findall(r"""app\.use\(\s*['"]([^'"]+)['"]\s*,\s*create\w+Router""", text):
+        mount_prefixes.append(prefix)
+
+    for method, path in re.findall(r"""(?:app|router)\.(get|post|put|patch|delete)\(\s*['"]([^'"]+)['"]""", text, flags=re.IGNORECASE):
+        method_upper = method.upper()
+        normalized = normalize_contract_path(path)
+        signatures.add((method_upper, normalized))
+        if path.startswith("/"):
+            for prefix in mount_prefixes:
+                if normalized.startswith(prefix):
+                    continue
+                combined = normalize_contract_path(f"{prefix.rstrip('/')}/{path.lstrip('/')}")
+                signatures.add((method_upper, combined))
+
+    return sorted(signatures, key=lambda item: (item[0], item[1]))
 
 
 def validate_tests_outputs() -> None:
@@ -1079,46 +1212,194 @@ def validate_docs_outputs() -> None:
         raise OrchestratorError("RUNBOOK.md validation failed: missing troubleshooting section.")
 
 
+def cluster_paths_by_prefix(paths: Sequence[str], prefixes: Sequence[str]) -> Tuple[List[str], List[str]]:
+    primary: List[str] = []
+    secondary: List[str] = []
+    for path in paths:
+        if any(path.startswith(prefix) for prefix in prefixes):
+            primary.append(path)
+        else:
+            secondary.append(path)
+    return primary, secondary
+
+
+def derive_owned_paths_from_outputs(outputs: Sequence[str], extra_exact: Sequence[str] = ()) -> Tuple[str, ...]:
+    owned: List[str] = []
+    seen: set[str] = set()
+
+    for rel in outputs:
+        p = Path(rel)
+        parent = p.parent.as_posix()
+        if parent not in {".", ""}:
+            pattern = f"{parent}/**"
+        else:
+            pattern = rel
+        if pattern not in seen:
+            owned.append(pattern)
+            seen.add(pattern)
+
+    for rel in extra_exact:
+        if rel not in seen:
+            owned.append(rel)
+            seen.add(rel)
+
+    return tuple(owned)
+
+
+def split_broad_role(role: WorkerRole) -> List[WorkerRole]:
+    role_name = role.name.lower()
+    outputs = list(role.required_outputs)
+
+    if len(outputs) < 9:
+        return [role]
+
+    if "frontend" in role_name or "ui" in role_name:
+        shell_outputs, runtime_outputs = cluster_paths_by_prefix(
+            outputs,
+            (
+                "frontend/src/components/",
+                "frontend/src/pages/",
+                "frontend/src/screens/",
+                "frontend/src/styles/",
+                "frontend/public/",
+                "frontend/docs/",
+            ),
+        )
+        if shell_outputs and runtime_outputs:
+            shell_required = tuple(shell_outputs)
+            runtime_required = tuple(runtime_outputs)
+            shell_inputs = tuple(sorted(set(role.required_inputs) | set(runtime_required)))
+            runtime_inputs = role.required_inputs
+            return [
+                WorkerRole(
+                    name=f"{role.name} Shell",
+                    goal=f"{role.goal} Focus on app shell, presentation components, public assets, and UX-facing files.",
+                    owned_paths=derive_owned_paths_from_outputs(shell_required),
+                    required_inputs=shell_inputs,
+                    required_outputs=shell_required,
+                    validation_keywords=(),
+                    parallel_group=role.parallel_group,
+                    notes=role.notes + ("Derived worker split by orchestrator to reduce single-session load.",),
+                ),
+                WorkerRole(
+                    name=f"{role.name} Runtime",
+                    goal=f"{role.goal} Focus on state, data, runtime logic, and non-shell implementation files.",
+                    owned_paths=derive_owned_paths_from_outputs(runtime_required),
+                    required_inputs=runtime_inputs,
+                    required_outputs=runtime_required,
+                    validation_keywords=(),
+                    parallel_group=role.parallel_group,
+                    notes=role.notes + ("Derived worker split by orchestrator to reduce single-session load.",),
+                ),
+            ]
+
+    if "backend" in role_name or "api" in role_name or "server" in role_name:
+        api_outputs, data_outputs = cluster_paths_by_prefix(
+            outputs,
+            (
+                "backend/src/routes/",
+                "backend/src/server.",
+                "backend/src/controllers/",
+                "backend/src/http/",
+                "backend/src/views/",
+                "infra/",
+            ),
+        )
+        if api_outputs and data_outputs:
+            api_required = tuple(api_outputs)
+            data_required = tuple(data_outputs)
+            api_inputs = tuple(sorted(set(role.required_inputs) | set(data_required)))
+            data_inputs = role.required_inputs
+            return [
+                WorkerRole(
+                    name=f"{role.name} API",
+                    goal=f"{role.goal} Focus on server bootstrap, HTTP routes, views, and deployment-facing files.",
+                    owned_paths=derive_owned_paths_from_outputs(api_required),
+                    required_inputs=api_inputs,
+                    required_outputs=api_required,
+                    validation_keywords=(),
+                    parallel_group=role.parallel_group,
+                    notes=role.notes + ("Derived worker split by orchestrator to reduce single-session load.",),
+                ),
+                WorkerRole(
+                    name=f"{role.name} Data",
+                    goal=f"{role.goal} Focus on database, persistence, services, and data-facing logic.",
+                    owned_paths=derive_owned_paths_from_outputs(data_required),
+                    required_inputs=data_inputs,
+                    required_outputs=data_required,
+                    validation_keywords=(),
+                    parallel_group=role.parallel_group,
+                    notes=role.notes + ("Derived worker split by orchestrator to reduce single-session load.",),
+                ),
+            ]
+
+    return [role]
+
+
+def expand_implementation_roles(roles: Sequence[WorkerRole]) -> List[WorkerRole]:
+    expanded: List[WorkerRole] = []
+    for role in roles:
+        derived = split_broad_role(role)
+        if len(derived) > 1:
+            log_verbose(f"Expanded role {role.name} into {[item.name for item in derived]}")
+        expanded.extend(derived)
+    return expanded
+
+
 async def run_isolated_worker(role: WorkerRole, prompt: str) -> WorkerExecutionResult:
-    worker_id = f"{int(time.time())}-{uuid.uuid4().hex[:8]}"
-    stage_dir = WORKSPACES_DIR / f"{role.name.lower().replace(' ', '_')}-{worker_id}"
-    copy_workspace(WORKSPACE, stage_dir)
-    log_verbose(f"{role.name}: staged workspace at {stage_dir}")
-    log_verbose(f"{role.name}: owned_paths={list(role.owned_paths)}")
-    log_verbose(f"{role.name}: required_outputs={list(role.required_outputs)}")
+    last_error: Optional[Exception] = None
 
-    before = snapshot_workspace(stage_dir)
-    result = await run_codex(prompt, cwd=stage_dir, label=role.name)
-    after = snapshot_workspace(stage_dir)
-    diff = diff_snapshots(before, after)
-    log_verbose(
-        f"{role.name}: diff created={len(diff['created'])} modified={len(diff['modified'])} deleted={len(diff['deleted'])}"
-    )
-    if VERBOSE and diff["created"]:
-        log_verbose(f"{role.name}: created sample={diff['created'][:12]}")
-    if VERBOSE and diff["modified"]:
-        log_verbose(f"{role.name}: modified sample={diff['modified'][:12]}")
+    for attempt in range(1, max(1, MAX_WORKER_ATTEMPTS) + 1):
+        worker_id = f"{int(time.time())}-{uuid.uuid4().hex[:8]}-attempt{attempt}"
+        stage_dir = WORKSPACES_DIR / f"{role.name.lower().replace(' ', '_')}-{worker_id}"
+        copy_workspace(WORKSPACE, stage_dir)
+        log_verbose(f"{role.name}: staged workspace at {stage_dir}")
+        log_verbose(f"{role.name}: attempt={attempt}/{max(1, MAX_WORKER_ATTEMPTS)}")
+        log_verbose(f"{role.name}: owned_paths={list(role.owned_paths)}")
+        log_verbose(f"{role.name}: required_outputs={list(role.required_outputs)}")
 
-    validate_footer(result)
-    validate_worker_diff(role, diff)
+        try:
+            before = snapshot_workspace(stage_dir)
+            result = await run_codex(prompt, cwd=stage_dir, label=role.name)
+            after = snapshot_workspace(stage_dir)
+            diff = diff_snapshots(before, after)
+            log_verbose(
+                f"{role.name}: diff created={len(diff['created'])} modified={len(diff['modified'])} deleted={len(diff['deleted'])}"
+            )
+            if VERBOSE and diff["created"]:
+                log_verbose(f"{role.name}: created sample={diff['created'][:12]}")
+            if VERBOSE and diff["modified"]:
+                log_verbose(f"{role.name}: modified sample={diff['modified'][:12]}")
 
-    for rel in role.required_outputs:
-        if rel not in after:
-            raise OrchestratorError(f"[{role.name}] Required output missing in staged workspace: {rel}")
+            validate_footer(result)
+            validate_worker_diff(role, diff)
 
-    merged_files = merge_worker_outputs(role, stage_dir, diff["created"], diff["modified"])
-    if not merged_files:
-        raise OrchestratorError(f"[{role.name}] No owned files were produced or modified.")
-    log_verbose(f"{role.name}: merged_files={merged_files}")
+            for rel in role.required_outputs:
+                if rel not in after:
+                    raise OrchestratorError(f"[{role.name}] Required output missing in staged workspace: {rel}")
 
-    return WorkerExecutionResult(
-        role=role,
-        result=result,
-        created=diff["created"],
-        modified=diff["modified"],
-        deleted=diff["deleted"],
-        merged_files=merged_files,
-    )
+            merged_files = merge_worker_outputs(role, stage_dir, diff["created"], diff["modified"])
+            if not merged_files:
+                raise OrchestratorError(f"[{role.name}] No owned files were produced or modified.")
+            log_verbose(f"{role.name}: merged_files={merged_files}")
+
+            return WorkerExecutionResult(
+                role=role,
+                result=result,
+                created=diff["created"],
+                modified=diff["modified"],
+                deleted=diff["deleted"],
+                merged_files=merged_files,
+            )
+        except Exception as exc:
+            last_error = exc
+            if attempt < max(1, MAX_WORKER_ATTEMPTS) and is_retryable_codex_error(str(exc)):
+                log_verbose(f"{role.name}: retrying after transient Codex error: {exc}")
+                continue
+            raise
+
+    assert last_error is not None
+    raise last_error
 
 
 def report_worker_result(execution: WorkerExecutionResult) -> None:
@@ -1259,6 +1540,8 @@ async def main() -> None:
     test_contract = summarize_text_block(TEST_CONTRACT_MD, limit=12000)
     architecture = summarize_text_block(ARCHITECTURE_MD, limit=12000)
     ui_spec = summarize_text_block(UI_SPEC_MD, limit=8000) if UI_SPEC_MD.exists() else ""
+    implementation_roles = expand_implementation_roles(implementation_roles)
+    log_verbose(f"Implementation roles after expansion: {[role.name for role in implementation_roles]}")
 
     print("[Implementation] running isolated Codex workers for component delivery")
     implementation_jobs: List[Tuple[WorkerRole, str]] = []
@@ -1285,7 +1568,7 @@ async def main() -> None:
         print(f"[Implementation] group={parallel_group} workers={len(jobs)}")
         results = await run_parallel_roles(jobs, max_concurrency=max(1, args.max_concurrency))
         for result in results:
-            validate_role_outputs(result.role)
+            validate_role_outputs(result.role, test_contract)
             report_worker_result(result)
         implementation_execs.extend(results)
         write_manifest(f"Manifest after implementation group {parallel_group}")
