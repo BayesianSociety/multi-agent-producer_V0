@@ -1,0 +1,91 @@
+{
+  "project_name": "Pet Vet Coding Puzzles",
+  "project_type": "web_app",
+  "model": "gpt-5.1-codex",
+  "sandbox": "workspace-write",
+  "results": [
+    {
+      "role": "Product Manager",
+      "duration_s": 66.65,
+      "output_tokens": 7122,
+      "merged_files": [
+        "AGENT_TASKS.md",
+        "REQUIREMENTS.md",
+        "TEST_CONTRACT.md",
+        "plan/overview.md"
+      ]
+    },
+    {
+      "role": "Architect",
+      "duration_s": 57.4,
+      "output_tokens": 5268,
+      "merged_files": [
+        "design/architecture.md",
+        "design/ui_spec.md"
+      ]
+    },
+    {
+      "role": "Shared Runtime & Content Engineer",
+      "duration_s": 416.87,
+      "output_tokens": 63836,
+      "merged_files": [
+        "shared/puzzles/puzzles.json",
+        "shared/runtime/blockDefinitions.ts",
+        "shared/runtime/executionEngine.ts"
+      ]
+    },
+    {
+      "role": "Frontend Experience & Workspace Engineer",
+      "duration_s": 603.92,
+      "output_tokens": 68982,
+      "merged_files": [
+        "frontend/package.json",
+        "frontend/public/index.html",
+        "frontend/src/App.css",
+        "frontend/src/App.tsx",
+        "frontend/src/components/Workspace/Workspace.tsx",
+        "frontend/src/components/Workspace/workspace.css",
+        "frontend/src/game/GameCanvas.css",
+        "frontend/src/game/GameCanvas.tsx",
+        "frontend/src/index.css",
+        "frontend/src/lib/ids.ts",
+        "frontend/src/lib/program.ts",
+        "frontend/src/lib/telemetry.ts",
+        "frontend/src/main.tsx",
+        "frontend/src/pages/AnalyticsDashboard.tsx",
+        "frontend/tsconfig.json",
+        "frontend/tsconfig.node.json",
+        "frontend/vite.config.ts"
+      ]
+    },
+    {
+      "role": "Backend Telemetry & Analytics Engineer",
+      "duration_s": 251.11,
+      "output_tokens": 32058,
+      "merged_files": [
+        "backend/src/db/migrations/001_init.sql",
+        "backend/src/db/schema.ts",
+        "backend/src/routes/analytics.ts",
+        "backend/src/routes/events.ts",
+        "backend/src/server.ts"
+      ]
+    },
+    {
+      "role": "QA Engineer",
+      "duration_s": 40.99,
+      "output_tokens": 3570,
+      "merged_files": [
+        "tests/TEST_PLAN.md"
+      ]
+    },
+    {
+      "role": "Docs Engineer",
+      "duration_s": 126.54,
+      "output_tokens": 10567,
+      "merged_files": [
+        "README.md",
+        "RUNBOOK.md"
+      ]
+    }
+  ]
+}

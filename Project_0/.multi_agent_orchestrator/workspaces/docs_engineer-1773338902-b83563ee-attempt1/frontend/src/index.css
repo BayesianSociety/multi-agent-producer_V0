@@ -1,0 +1,26 @@
+:root {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  color: #1f2a37;
+  background-color: #f7f8fb;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #fdf1f3, #f5f7fb 65%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}

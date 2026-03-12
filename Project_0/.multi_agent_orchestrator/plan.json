@@ -1,0 +1,88 @@
+{
+  "project_name": "Pet Vet Coding Puzzles",
+  "project_type": "web_app",
+  "summary": "Deliver a browser-based veterinary-themed block-coding puzzle game with shared runtime logic, polished React UI, and a Node/SQLite telemetry backend plus analytics views.",
+  "components": {
+    "frontend": true,
+    "backend": true,
+    "cli": false,
+    "mobile": false,
+    "database": true,
+    "docs": true
+  },
+  "implementation_roles": [
+    {
+      "name": "Shared Runtime & Content Engineer",
+      "goal": "Model the puzzle data pack and reusable execution/runtime logic that both app tiers consume.",
+      "owned_paths": [
+        "shared/**"
+      ],
+      "required_inputs": [
+        "project_specification.md"
+      ],
+      "required_outputs": [
+        "shared/puzzles/puzzles.json",
+        "shared/runtime/blockDefinitions.ts",
+        "shared/runtime/executionEngine.ts"
+      ],
+      "validation_keywords": [],
+      "parallel_group": "phase1",
+      "notes": [
+        "Deliver JSON-defined 17-level progression, failure hint rules, and reusable interpreter/state machine shared by frontend/backend."
+      ]
+    },
+    {
+      "name": "Frontend Experience & Workspace Engineer",
+      "goal": "Build the React/TypeScript client with draggable workspace, puzzle scenes, UI polish, and analytics views.",
+      "owned_paths": [
+        "frontend/**"
+      ],
+      "required_inputs": [
+        "shared/**"
+      ],
+      "required_outputs": [
+        "frontend/public/index.html",
+        "frontend/src/App.tsx",
+        "frontend/src/components/Workspace/Workspace.tsx",
+        "frontend/src/game/GameCanvas.tsx",
+        "frontend/src/pages/AnalyticsDashboard.tsx"
+      ],
+      "validation_keywords": [],
+      "parallel_group": "phase2",
+      "notes": [
+        "Implements block workspace, scene renderer, feedback loop, code-view toggle, telemetry client buffers, and analytics UI pulling backend data."
+      ]
+    },
+    {
+      "name": "Backend Telemetry & Analytics Engineer",
+      "goal": "Implement Node/Express APIs, SQLite schema, event ingestion, analytics queries, and movement replay endpoints.",
+      "owned_paths": [
+        "backend/**"
+      ],
+      "required_inputs": [
+        "project_specification.md",
+        "shared/puzzles/puzzles.json"
+      ],
+      "required_outputs": [
+        "backend/src/server.ts",
+        "backend/src/routes/events.ts",
+        "backend/src/routes/analytics.ts",
+        "backend/src/db/schema.ts",
+        "backend/src/db/migrations/001_init.sql"
+      ],
+      "validation_keywords": [],
+      "parallel_group": "phase2",
+      "notes": [
+        "Owns persistent telemetry storage, reports, replay endpoints, and ensures schema matches mandated tables."
+      ]
+    }
+  ],
+  "global_constraints": [
+    "Maintain exactly 17 data-driven puzzles covering sequencing, loops, and conditionals with JSON configuration.",
+    "Workspace must present command library on the left, on-start-root assembly on the right, and show Oops + hint on failure.",
+    "Execution engine must compile block graph to deterministic instructions with grid-based movement, loops, and conditionals.",
+    "SQLite database must implement all specified tables (users, sessions, puzzles, attempts, events, movements, puzzle_progress) and capture every gameplay/UI event including movement steps.",
+    "Provide analytics dashboards/pages capable of summarizing sessions, inspecting attempts, and replaying movement paths from stored data.",
+    "Frontend and backend must integrate to send/receive telemetry via HTTP endpoints and keep UI polished, accessible, and professional."
+  ]
+}

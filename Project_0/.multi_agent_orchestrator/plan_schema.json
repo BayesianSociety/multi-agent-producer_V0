@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "project_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_type": {
+      "type": "string",
+      "enum": [
+        "web_app",
+        "api_service",
+        "cli_tool",
+        "library",
+        "automation",
+        "mobile_app",
+        "desktop_app"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "frontend": {
+          "type": "boolean"
+        },
+        "backend": {
+          "type": "boolean"
+        },
+        "cli": {
+          "type": "boolean"
+        },
+        "mobile": {
+          "type": "boolean"
+        },
+        "database": {
+          "type": "boolean"
+        },
+        "docs": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "frontend",
+        "backend",
+        "cli",
+        "mobile",
+        "database",
+        "docs"
+      ]
+    },
+    "implementation_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "goal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owned_paths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^(?!/)(?!.*\\.\\.)(?:[^/\\s]+)(?:/[^/\\s]+)*(?:/\\*\\*|/\\*|(?:\\.[A-Za-z0-9_-]+))?$"
+            }
+          },
+          "required_inputs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^(?!/)(?!.*\\.\\.)(?:[^/\\n]+/)*[^/\\n]+$"
+            }
+          },
+          "required_outputs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^(?!/)(?!.*\\.\\.)(?:[^/\\n]+/)*[^/\\n]+(?:\\.[A-Za-z0-9_-]+)?$"
+            }
+          },
+          "validation_keywords": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "parallel_group": {
+            "type": "string",
+            "minLength": 1
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "name",
+          "goal",
+          "owned_paths",
+          "required_inputs",
+          "required_outputs",
+          "validation_keywords",
+          "parallel_group",
+          "notes"
+        ]
+      }
+    },
+    "global_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "project_name",
+    "project_type",
+    "summary",
+    "components",
+    "implementation_roles",
+    "global_constraints"
+  ]
+}

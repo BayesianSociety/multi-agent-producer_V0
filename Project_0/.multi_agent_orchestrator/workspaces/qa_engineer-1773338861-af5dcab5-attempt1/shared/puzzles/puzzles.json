@@ -1,0 +1,3956 @@
+{
+  "version": "1.0.0",
+  "theme": "Pet Vet Coding Puzzles",
+  "puzzles": [
+    {
+      "id": 1,
+      "title": "Welcome Check-In",
+      "scene": "welcome-bay",
+      "storyText": "Buddy is nervous for his first visit. Guide him straight to the exam table.",
+      "goalText": "Move Buddy to the exam table tile.",
+      "concepts": [
+        "sequencing"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "......",
+          "......",
+          "......",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": []
+      },
+      "entities": {
+        "pet": {
+          "id": "buddy",
+          "sprite": "puppy_brown",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 0
+          }
+        },
+        "objects": [],
+        "targets": [
+          {
+            "id": "exam_table",
+            "type": "exam_table",
+            "position": {
+              "x": 5,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.moveForwardSteps"
+      ],
+      "constraints": {
+        "maxBlocks": 5
+      },
+      "successCriteria": [
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "exam_table"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Make sure the last block lands Buddy on the exam table."
+        },
+        {
+          "failureReason": "collision",
+          "hint": "If Buddy bumps into something, add a turn before the move."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Scale Side Step",
+      "scene": "waiting-room",
+      "storyText": "The hallway has carts in the way. Steer Bella around them to the scale.",
+      "goalText": "Turn before the obstacle and reach the scale tile.",
+      "concepts": [
+        "sequencing"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "..##..",
+          "......",
+          "......",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "bella",
+          "sprite": "puppy_spotted",
+          "start": {
+            "x": 0,
+            "y": 3,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 1
+          }
+        },
+        "objects": [],
+        "targets": [
+          {
+            "id": "scale",
+            "type": "scale",
+            "position": {
+              "x": 4,
+              "y": 1
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.moveForwardSteps",
+        "movement.turnLeft",
+        "movement.turnRight"
+      ],
+      "constraints": {
+        "maxBlocks": 8
+      },
+      "successCriteria": [
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "scale"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "collision",
+          "hint": "Use a turn before walking into the carts."
+        },
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Bella must end on the glowing scale tile."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Zigzag Prep",
+      "scene": "hallway",
+      "storyText": "Milo needs to zigzag between supply crates. Face the right direction before walking.",
+      "goalText": "Reach the prep mat at the top of the hallway.",
+      "concepts": [
+        "sequencing"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "#.##..",
+          "......",
+          "..##..",
+          "......",
+          "##..##"
+        ],
+        "walkable": [
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "milo",
+          "sprite": "cat_orange",
+          "start": {
+            "x": 1,
+            "y": 3,
+            "direction": "north"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 4,
+            "y": 0
+          }
+        },
+        "objects": [],
+        "targets": [
+          {
+            "id": "prep_mat",
+            "type": "prep_mat",
+            "position": {
+              "x": 4,
+              "y": 0
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "movement.faceDirection"
+      ],
+      "constraints": {
+        "maxBlocks": 9
+      },
+      "successCriteria": [
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "prep_mat"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Face north again before making the final walk."
+        },
+        {
+          "failureReason": "collision",
+          "hint": "Supply crates block the path marked with # symbols."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Treat Fetch",
+      "scene": "treat-station",
+      "storyText": "Pick up a calming treat before meeting Noodle at the cushion.",
+      "goalText": "Collect the treat and reach Noodle.",
+      "concepts": [
+        "sequencing"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "..#...",
+          "......",
+          "..#...",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "noodle",
+          "sprite": "cat_gray",
+          "start": {
+            "x": 0,
+            "y": 4,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "treat_bowl",
+            "type": "bowl",
+            "itemType": "treat",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "cushion",
+            "type": "rest_spot",
+            "position": {
+              "x": 5,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem"
+      ],
+      "constraints": {
+        "maxBlocks": 10
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "treat"
+        },
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "cushion"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingItem",
+          "hint": "Pick up the treat before heading to the cushion."
+        },
+        {
+          "failureReason": "collision",
+          "hint": "Use turns to snake through the storage racks."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Comfort Delivery",
+      "scene": "exam-room",
+      "storyText": "Pip the puppy calms down when you hand over a toy and treat.",
+      "goalText": "Grab the treat and deliver it at Pip\u2019s bed.",
+      "concepts": [
+        "sequencing"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          ".#....",
+          "......",
+          "...#..",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "pip",
+          "sprite": "puppy_black",
+          "start": {
+            "x": 1,
+            "y": 0,
+            "direction": "south"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 1
+          }
+        },
+        "objects": [
+          {
+            "id": "toy_box",
+            "type": "toy_box",
+            "itemType": "treat",
+            "position": {
+              "x": 3,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "pip_bed",
+            "type": "rest_spot",
+            "position": {
+              "x": 4,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.moveForwardSteps",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.dropItem",
+        "actions.giveTreat"
+      ],
+      "constraints": {
+        "maxBlocks": 12
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "treat"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.giveTreat",
+          "targetId": "pip_bed"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingAction",
+          "hint": "Use the Give Treat block once you reach Pip."
+        },
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Pip only counts as helped if you stop on the bed tile."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Hallway Hustle",
+      "scene": "hallway",
+      "storyText": "The therapy dog Dash needs to jog down a long hallway. Use a loop to save blocks.",
+      "goalText": "Reach the treadmill at the far end using Repeat blocks.",
+      "concepts": [
+        "sequencing",
+        "loops"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "......",
+          "......",
+          "......",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": []
+      },
+      "entities": {
+        "pet": {
+          "id": "dash",
+          "sprite": "dog_corgi",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [],
+        "targets": [
+          {
+            "id": "treadmill",
+            "type": "equipment",
+            "position": {
+              "x": 5,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.moveForwardSteps",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "control.repeatTimes"
+      ],
+      "constraints": {
+        "maxBlocks": 6,
+        "requiredBlocks": [
+          "control.repeatTimes"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "treadmill"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Set the Repeat count high enough to reach the treadmill."
+        },
+        {
+          "failureReason": "missingAction",
+          "hint": "You must include the Repeat block or you will run out of moves."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Brush Brigade",
+      "scene": "grooming-bay",
+      "storyText": "Sprinkles rolled in mud. Brush her three times after reaching the grooming mat.",
+      "goalText": "Arrive at the mat and brush the pet three times (loop recommended).",
+      "concepts": [
+        "sequencing",
+        "loops"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          ".#....",
+          "......",
+          ".#....",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "sprinkles",
+          "sprite": "dog_poodle",
+          "start": {
+            "x": 0,
+            "y": 4,
+            "direction": "east"
+          },
+          "symptoms": [
+            "dirty"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "brush_cart",
+            "type": "cart",
+            "itemType": "brush",
+            "position": {
+              "x": 2,
+              "y": 4
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "groom_mat",
+            "type": "groom_mat",
+            "position": {
+              "x": 5,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.brushPet",
+        "control.repeatTimes"
+      ],
+      "constraints": {
+        "maxBlocks": 10,
+        "requiredBlocks": [
+          "control.repeatTimes"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "brush"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.brushPet",
+          "times": 3
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "dirty"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingItem",
+          "hint": "Stop by the brush cart before brushing Sprinkles."
+        },
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Make sure you brush three times\u2014use Repeat to save blocks."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Sanitation Sweep",
+      "scene": "treatment-nook",
+      "storyText": "Three exam stations must be cleaned. Loop through each square.",
+      "goalText": "Walk the square path and run Clean Station at each stop.",
+      "concepts": [
+        "sequencing",
+        "loops"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "######",
+          "#....#",
+          "#....#",
+          "#....#",
+          "######"
+        ],
+        "walkable": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "porter",
+          "sprite": "dog_lab",
+          "start": {
+            "x": 1,
+            "y": 1,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 4,
+            "y": 2
+          }
+        },
+        "objects": [],
+        "targets": [
+          {
+            "id": "station_a",
+            "type": "station",
+            "position": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          {
+            "id": "station_b",
+            "type": "station",
+            "position": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": "station_c",
+            "type": "station",
+            "position": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          {
+            "id": "station_d",
+            "type": "station",
+            "position": {
+              "x": 1,
+              "y": 3
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.cleanStation",
+        "control.repeatTimes",
+        "control.repeatSequence"
+      ],
+      "constraints": {
+        "maxBlocks": 12,
+        "requiredBlocks": [
+          "control.repeatSequence"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "performAction",
+          "action": "actions.cleanStation",
+          "targetIds": [
+            "station_a",
+            "station_b",
+            "station_c",
+            "station_d"
+          ]
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Plan a loop that covers all four stations."
+        },
+        {
+          "failureReason": "missingAction",
+          "hint": "Clean Station must run at each stop, not just once."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Snack Circuit",
+      "scene": "play-yard",
+      "storyText": "Deliver snacks to three crates. Repeat the same pattern.",
+      "goalText": "Use Repeat Sequence to visit each crate and drop a treat.",
+      "concepts": [
+        "sequencing",
+        "loops"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "...#..",
+          "......",
+          "...#..",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "rocket",
+          "sprite": "dog_husky",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "snack_bin",
+            "type": "bin",
+            "itemType": "treat",
+            "position": {
+              "x": 1,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "crate_a",
+            "type": "crate",
+            "position": {
+              "x": 3,
+              "y": 0
+            }
+          },
+          {
+            "id": "crate_b",
+            "type": "crate",
+            "position": {
+              "x": 3,
+              "y": 2
+            }
+          },
+          {
+            "id": "crate_c",
+            "type": "crate",
+            "position": {
+              "x": 3,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "movement.moveForwardSteps",
+        "actions.pickUpItem",
+        "actions.dropItem",
+        "actions.giveTreat",
+        "control.repeatTimes",
+        "control.repeatSequence"
+      ],
+      "constraints": {
+        "maxBlocks": 14,
+        "requiredBlocks": [
+          "control.repeatSequence"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "treat"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.giveTreat",
+          "targetIds": [
+            "crate_a",
+            "crate_b",
+            "crate_c"
+          ]
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingAction",
+          "hint": "Give a treat at every crate using the same repeated pattern."
+        },
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Load up on treats before looping through crates."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Vitals Circuit",
+      "scene": "exam-ring",
+      "storyText": "Check vitals at each colored station before returning to the mentor.",
+      "goalText": "Loop around the ring and run Check Vitals at every station.",
+      "concepts": [
+        "sequencing",
+        "loops"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "######",
+          "#....#",
+          "#....#",
+          "#....#",
+          "######"
+        ],
+        "walkable": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "ember",
+          "sprite": "cat_calico",
+          "start": {
+            "x": 2,
+            "y": 2,
+            "direction": "north"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "thermo_station",
+            "type": "tools",
+            "itemType": "thermometer",
+            "position": {
+              "x": 2,
+              "y": 1
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "station_blue",
+            "type": "station",
+            "position": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          {
+            "id": "station_green",
+            "type": "station",
+            "position": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": "station_yellow",
+            "type": "station",
+            "position": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          {
+            "id": "station_pink",
+            "type": "station",
+            "position": {
+              "x": 1,
+              "y": 3
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "movement.moveForwardSteps",
+        "actions.checkVitals",
+        "control.repeatTimes",
+        "control.repeatSequence"
+      ],
+      "constraints": {
+        "maxBlocks": 14,
+        "requiredBlocks": [
+          "control.repeatSequence"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "performAction",
+          "action": "actions.checkVitals",
+          "targetIds": [
+            "station_blue",
+            "station_green",
+            "station_yellow",
+            "station_pink"
+          ]
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingAction",
+          "hint": "Run Check Vitals at every colored station."
+        },
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Stay inside the exam ring as you loop."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Sniffle Sort",
+      "scene": "pharmacy",
+      "storyText": "Clover might have sniffles. Use an If block to give medicine only when needed.",
+      "goalText": "Diagnose Clover and administer medicine if sniffles are present.",
+      "concepts": [
+        "sequencing",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "..#...",
+          "......",
+          "..#...",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "clover",
+          "sprite": "cat_white",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": [
+            "sniffles"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "med_cart",
+            "type": "cart",
+            "itemType": "medicine",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "therapy_pad",
+            "type": "pad",
+            "position": {
+              "x": 5,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "logic.ifCondition",
+        "actions.giveMedicine"
+      ],
+      "constraints": {
+        "maxBlocks": 12,
+        "requiredBlocks": [
+          "logic.ifCondition"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "medicine"
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "sniffles"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "wrongCondition",
+          "hint": "Wrap the medicine block inside an If that checks for sniffles."
+        },
+        {
+          "failureReason": "missingItem",
+          "hint": "Swing by the medication cart before treating Clover."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Itch Patrol",
+      "scene": "derm-lab",
+      "storyText": "Luna might be itchy or perfectly fine. Use If/Else to choose between ointment and a treat.",
+      "goalText": "Handle both outcomes correctly.",
+      "concepts": [
+        "sequencing",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "...#..",
+          "...#..",
+          "......",
+          "..#...",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "luna",
+          "sprite": "dog_spaniel",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": [
+            "itchy"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "ointment_shelf",
+            "type": "shelf",
+            "itemType": "ointment",
+            "position": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "id": "treat_jar",
+            "type": "jar",
+            "itemType": "treat",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "exam_pad",
+            "type": "pad",
+            "position": {
+              "x": 5,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.applyOintment",
+        "actions.giveTreat",
+        "logic.ifElseCondition"
+      ],
+      "constraints": {
+        "maxBlocks": 14,
+        "requiredBlocks": [
+          "logic.ifElseCondition"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "resolveSymptom",
+          "symptom": "itchy"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.giveTreat",
+          "optional": true
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "wrongCondition",
+          "hint": "Use If/Else so Luna gets ointment when itchy and a treat otherwise."
+        },
+        {
+          "failureReason": "missingItem",
+          "hint": "Grab ointment from the shelf before treating Luna."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Splint Station",
+      "scene": "orthopedics",
+      "storyText": "Rex limped in with an injured paw. Apply a bandage only after checking vitals.",
+      "goalText": "Sequence a vitals check followed by a bandage application.",
+      "concepts": [
+        "sequencing",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "......",
+          "..#...",
+          "......",
+          "...#..",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "rex",
+          "sprite": "dog_german",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": [
+            "injured"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "bandage_cart",
+            "type": "cart",
+            "itemType": "bandage",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "splint_table",
+            "type": "table",
+            "position": {
+              "x": 5,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.checkVitals",
+        "actions.applyBandage",
+        "logic.ifCondition"
+      ],
+      "constraints": {
+        "maxBlocks": 14
+      },
+      "successCriteria": [
+        {
+          "type": "collectItem",
+          "itemType": "bandage"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.checkVitals",
+          "targetId": "splint_table"
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "injured"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "missingAction",
+          "hint": "Check vitals before you apply the bandage."
+        },
+        {
+          "failureReason": "missingItem",
+          "hint": "Stop at the bandage cart on the way."
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Symptom Sweep",
+      "scene": "triage-loop",
+      "storyText": "Rotate through rooms and treat whichever symptom you observe. Loop until all are resolved.",
+      "goalText": "Use Repeat Until with condition checks to clear each symptom.",
+      "concepts": [
+        "loops",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "######",
+          "#....#",
+          "#....#",
+          "#....#",
+          "######"
+        ],
+        "walkable": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "nova",
+          "sprite": "dog_retriever",
+          "start": {
+            "x": 1,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": [
+            "itchy",
+            "sniffles"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 4,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "med_shelf",
+            "type": "shelf",
+            "itemType": "medicine",
+            "position": {
+              "x": 2,
+              "y": 1
+            }
+          },
+          {
+            "id": "ointment_case",
+            "type": "case",
+            "itemType": "ointment",
+            "position": {
+              "x": 3,
+              "y": 3
+            }
+          }
+        ],
+        "targets": []
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "logic.ifCondition",
+        "logic.ifElseCondition",
+        "actions.giveMedicine",
+        "actions.applyOintment",
+        "control.repeatTimes",
+        "control.repeatUntil"
+      ],
+      "constraints": {
+        "maxBlocks": 18,
+        "requiredBlocks": [
+          "control.repeatUntil"
+        ]
+      },
+      "successCriteria": [
+        {
+          "type": "resolveSymptom",
+          "symptom": "itchy"
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "sniffles"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "loopGuardExceeded",
+          "hint": "Ensure the Repeat Until condition eventually becomes true by removing each symptom."
+        },
+        {
+          "failureReason": "wrongCondition",
+          "hint": "Check for each symptom before applying the matching treatment."
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Pharmacy Protocol",
+      "scene": "pharmacy",
+      "storyText": "Multiple pets queue up. Dispense medicine, ointment, or treats depending on their chart.",
+      "goalText": "Handle three chart entries using nested logic.",
+      "concepts": [
+        "loops",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "...#..",
+          "...#..",
+          "......",
+          "...#..",
+          "......"
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "queue_runner",
+          "sprite": "dog_shepherd",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": []
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 5,
+            "y": 2
+          }
+        },
+        "objects": [
+          {
+            "id": "med_bin",
+            "type": "bin",
+            "itemType": "medicine",
+            "position": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "id": "ointment_bin",
+            "type": "bin",
+            "itemType": "ointment",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "id": "treat_bin",
+            "type": "bin",
+            "itemType": "treat",
+            "position": {
+              "x": 3,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "queue_a",
+            "type": "queue",
+            "position": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": "queue_b",
+            "type": "queue",
+            "position": {
+              "x": 4,
+              "y": 2
+            }
+          },
+          {
+            "id": "queue_c",
+            "type": "queue",
+            "position": {
+              "x": 4,
+              "y": 3
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.giveMedicine",
+        "actions.applyOintment",
+        "actions.giveTreat",
+        "logic.ifCondition",
+        "logic.ifElseCondition",
+        "control.repeatTimes",
+        "control.repeatSequence"
+      ],
+      "constraints": {
+        "maxBlocks": 20
+      },
+      "successCriteria": [
+        {
+          "type": "performAction",
+          "action": "actions.giveMedicine",
+          "targetId": "queue_a"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.applyOintment",
+          "targetId": "queue_b"
+        },
+        {
+          "type": "performAction",
+          "action": "actions.giveTreat",
+          "targetId": "queue_c"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Each queue tile expects a different treatment. Use branches to decide."
+        },
+        {
+          "failureReason": "missingItem",
+          "hint": "Restock before visiting each queue tile."
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Night Watch",
+      "scene": "evening-ward",
+      "storyText": "During night rounds you must move quietly, pausing between stations and reacting to random symptoms.",
+      "goalText": "Traverse every ward tile, pausing briefly, and resolve symptoms as they appear.",
+      "concepts": [
+        "loops",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 6,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "######",
+          "#....#",
+          "#....#",
+          "#....#",
+          "######"
+        ],
+        "walkable": [
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "night_patrol",
+          "sprite": "dog_mutt",
+          "start": {
+            "x": 1,
+            "y": 1,
+            "direction": "east"
+          },
+          "symptoms": [
+            "itchy"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_default",
+          "position": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        "objects": [
+          {
+            "id": "night_med",
+            "type": "station",
+            "itemType": "medicine",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "id": "night_ointment",
+            "type": "station",
+            "itemType": "ointment",
+            "position": {
+              "x": 3,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "ward_a",
+            "type": "ward",
+            "position": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          {
+            "id": "ward_b",
+            "type": "ward",
+            "position": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": "ward_c",
+            "type": "ward",
+            "position": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          {
+            "id": "ward_d",
+            "type": "ward",
+            "position": {
+              "x": 1,
+              "y": 3
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "actions.pickUpItem",
+        "actions.applyOintment",
+        "actions.giveMedicine",
+        "utility.wait",
+        "logic.ifCondition",
+        "logic.ifElseCondition",
+        "control.repeatTimes",
+        "control.repeatSequence"
+      ],
+      "constraints": {
+        "maxBlocks": 22
+      },
+      "successCriteria": [
+        {
+          "type": "performAction",
+          "action": "utility.wait",
+          "times": 4
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "itchy"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Pause briefly at each ward tile using the Pause block."
+        },
+        {
+          "failureReason": "missingAction",
+          "hint": "Remember to treat the itch before finishing rounds."
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Grand Rounds",
+      "scene": "grand-suite",
+      "storyText": "Final challenge! Multiple pets with different needs await. Combine loops, logic, and treatments.",
+      "goalText": "Resolve every symptom, deliver items, and finish at the celebration mat.",
+      "concepts": [
+        "sequencing",
+        "loops",
+        "conditionals"
+      ],
+      "grid": {
+        "width": 7,
+        "height": 5,
+        "tileSize": 64,
+        "layout": [
+          "...#...",
+          "...#...",
+          ".......",
+          "..###..",
+          "......."
+        ],
+        "walkable": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 6,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 4,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 6,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 3,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 6,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 3
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 5,
+            "y": 3
+          },
+          {
+            "x": 6,
+            "y": 3
+          },
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 4
+          },
+          {
+            "x": 2,
+            "y": 4
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 4
+          },
+          {
+            "x": 6,
+            "y": 4
+          }
+        ],
+        "obstacles": [
+          {
+            "x": 3,
+            "y": 0
+          },
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 3
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ]
+      },
+      "entities": {
+        "pet": {
+          "id": "final_team",
+          "sprite": "pet_team",
+          "start": {
+            "x": 0,
+            "y": 2,
+            "direction": "east"
+          },
+          "symptoms": [
+            "itchy",
+            "sniffles",
+            "injured"
+          ]
+        },
+        "mentor": {
+          "id": "dr_luma",
+          "sprite": "mentor_finale",
+          "position": {
+            "x": 6,
+            "y": 0
+          }
+        },
+        "objects": [
+          {
+            "id": "final_ointment",
+            "type": "case",
+            "itemType": "ointment",
+            "position": {
+              "x": 1,
+              "y": 2
+            }
+          },
+          {
+            "id": "final_medicine",
+            "type": "case",
+            "itemType": "medicine",
+            "position": {
+              "x": 2,
+              "y": 2
+            }
+          },
+          {
+            "id": "final_bandage",
+            "type": "case",
+            "itemType": "bandage",
+            "position": {
+              "x": 3,
+              "y": 2
+            }
+          },
+          {
+            "id": "final_treats",
+            "type": "case",
+            "itemType": "treat",
+            "position": {
+              "x": 4,
+              "y": 2
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "celebration_mat",
+            "type": "mat",
+            "position": {
+              "x": 6,
+              "y": 2
+            }
+          }
+        ]
+      },
+      "availableBlocks": [
+        "movement.moveForward",
+        "movement.moveForwardSteps",
+        "movement.turnLeft",
+        "movement.turnRight",
+        "movement.faceDirection",
+        "actions.pickUpItem",
+        "actions.dropItem",
+        "actions.giveTreat",
+        "actions.brushPet",
+        "actions.cleanStation",
+        "actions.applyBandage",
+        "actions.applyOintment",
+        "actions.giveMedicine",
+        "actions.checkVitals",
+        "logic.ifCondition",
+        "logic.ifElseCondition",
+        "control.repeatTimes",
+        "control.repeatUntil",
+        "control.repeatSequence",
+        "utility.wait"
+      ],
+      "constraints": {
+        "maxBlocks": 24
+      },
+      "successCriteria": [
+        {
+          "type": "resolveSymptom",
+          "symptom": "itchy"
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "sniffles"
+        },
+        {
+          "type": "resolveSymptom",
+          "symptom": "injured"
+        },
+        {
+          "type": "reach",
+          "entityId": "pet",
+          "targetId": "celebration_mat"
+        }
+      ],
+      "hintRules": [
+        {
+          "failureReason": "goalNotMet",
+          "hint": "Finish on the celebration mat after resolving every symptom."
+        },
+        {
+          "failureReason": "missingAction",
+          "hint": "Remember the different treatment blocks: ointment for itchy, medicine for sniffles, bandage for injuries."
+        },
+        {
+          "failureReason": "loopGuardExceeded",
+          "hint": "Use clear exit conditions so loops eventually stop."
+        }
+      ]
+    }
+  ]
+}

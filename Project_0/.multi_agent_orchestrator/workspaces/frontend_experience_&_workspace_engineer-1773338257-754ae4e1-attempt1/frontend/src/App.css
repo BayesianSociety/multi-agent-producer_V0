@@ -1,0 +1,103 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 24px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.1);
+}
+
+.progress-track {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6f58ff, #8f7aff);
+}
+
+.level-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+  gap: 0.4rem;
+}
+
+.level-node {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.4rem;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.level-node.current {
+  transform: translateY(-2px);
+  border-color: #6f58ff;
+}
+
+.level-node.unlocked {
+  border-color: #c4b5fd;
+  background: rgba(111, 88, 255, 0.08);
+}
+
+.level-node.completed {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #0f172a;
+  border-color: transparent;
+}
+
+.level-node.locked {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.main-stage {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.25rem;
+  height: calc(100vh - 280px);
+}
+
+.oops-modal,
+.success-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.oops-modal article,
+.success-modal article {
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  width: min(420px, 80vw);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.analytics-panel {
+  background: #fff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.1);
+}

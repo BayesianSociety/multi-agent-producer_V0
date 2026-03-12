@@ -1,0 +1,157 @@
+{
+  "note": "Manifest after docs",
+  "model": "gpt-5.1-codex",
+  "sandbox": "workspace-write",
+  "workspace": "/home/postnl/multi-agent-producer_V0/Project_0",
+  "snapshot_sha256": "29c3627dd4f23c84f01fa0ad3918169a74dcf9a5f2b2ab2ea06152b7cc9649e5",
+  "files": {
+    "RUNBOOK.md": {
+      "sha256": "f7f9c16f8594088951b5b50a1be9693fb7264f393fdf1a12ce37a0977f67f69a",
+      "size": 6118
+    },
+    "multi_agent_orchestrator.py": {
+      "sha256": "4b0a34707bcaa83faeb81396e1572ab11f99f7679cfd69827737fb2d157ba4d3",
+      "size": 61835
+    },
+    "README.md": {
+      "sha256": "bb55c7b46b434a376d3e33bb923c4f736b3c211a217d5d6f33ee8c3ac3a39814",
+      "size": 5876
+    },
+    "TEST_CONTRACT.md": {
+      "sha256": "339450901a5f167159da95f2b4821a701ecedb9c1ac63f4f0266be0cab290c6f",
+      "size": 5012
+    },
+    "REQUIREMENTS.md": {
+      "sha256": "a1450249d64a5b7935cd1b9a250976b4874dd07a7c903282dab04fbe5c1249e3",
+      "size": 6291
+    },
+    "AGENT_TASKS.md": {
+      "sha256": "cb2c03e46afe0243b62d12e91f4f1913d6a5d997d9a647d10864ea0d73a41f55",
+      "size": 4449
+    },
+    "project_specification.md": {
+      "sha256": "092183da1f225f807645c36b24c4dc0b569c0db3aefa9aec7837cef3e031b169",
+      "size": 18665
+    },
+    "Use.md": {
+      "sha256": "251bd4dd749a8c7fc091fde8c585c2299ab767828cd5f5dd2fb91550a93a8f22",
+      "size": 181
+    },
+    "backend/src/server.ts": {
+      "sha256": "a436ed975941d33ed482f6aa89b9d195d8ff5026270cb3058a15e12dab2807f6",
+      "size": 6637
+    },
+    "backend/src/routes/events.ts": {
+      "sha256": "1b62c114de022fe6fa1e2615c95244ab7c18fac0de56c5198a00b2afd220e20f",
+      "size": 2865
+    },
+    "backend/src/routes/analytics.ts": {
+      "sha256": "6ca5bea601fc0010ef03d4ed5eeef73cba034c5b8011737e0c359ba0a28710f5",
+      "size": 2219
+    },
+    "backend/src/db/schema.ts": {
+      "sha256": "3718a779659aabf82edeb69a98696f0803e315de5d9ebdde8a4e40df65619cbd",
+      "size": 22094
+    },
+    "backend/src/db/migrations/001_init.sql": {
+      "sha256": "988b79c15ed8c603bae934ad6be9a66c4af01e1d4f8e2619c8a183f910adc3c6",
+      "size": 2833
+    },
+    "tests/TEST_PLAN.md": {
+      "sha256": "b31ac75ee21a5c9a8b30cd15d909388a574c6f7b8ce83c06b8720aff3034460e",
+      "size": 9496
+    },
+    "frontend/package.json": {
+      "sha256": "74c67fdb5c45cf2404017b0c96f2338fca403063723c59a732f8a3491ce8045e",
+      "size": 457
+    },
+    "frontend/tsconfig.json": {
+      "sha256": "ddc39d2f58ff3b0e6a7a0cb21e72846a6e897595656bcb792af10520eb8c10ed",
+      "size": 628
+    },
+    "frontend/vite.config.ts": {
+      "sha256": "69245ffb5bb5998f971395c15eb22141c48318b3f17106ae0322b9bd397fb437",
+      "size": 412
+    },
+    "frontend/tsconfig.node.json": {
+      "sha256": "81bd99dd88ecd323aa09b1e086847eaa01f6719ef3d4f093563d3afe5f4d57e9",
+      "size": 264
+    },
+    "frontend/src/index.css": {
+      "sha256": "5bb48b8bb59fd5bf8c2593b8762b76d01f0025a4630e61a175d3381e15416880",
+      "size": 382
+    },
+    "frontend/src/main.tsx": {
+      "sha256": "631a3d40ef113b9c3c85e783353a6ad3d230ad264a350daad53281f38929c7e2",
+      "size": 250
+    },
+    "frontend/src/App.css": {
+      "sha256": "649d83fc3fe4928700984169d2c3503957b1bf79df52d166922c2a17ec9ced72",
+      "size": 1872
+    },
+    "frontend/src/App.tsx": {
+      "sha256": "10262933a235e9c74d0ec45b1ee087f52c0fc03e73401df36715991535fe514f",
+      "size": 15717
+    },
+    "frontend/src/lib/program.ts": {
+      "sha256": "6f7be5265b960ca3a96d67bcff08a751eab02241ee239b2f709a55a7ff7f3f1b",
+      "size": 6887
+    },
+    "frontend/src/lib/ids.ts": {
+      "sha256": "b4de4ed6766f6f90370c03d21cd2235c7a4899ef25b3e45def33d8ae70e65140",
+      "size": 144
+    },
+    "frontend/src/lib/telemetry.ts": {
+      "sha256": "6f301ea98c44fdece94cfe7be4b099e08a0ae9d5f49b7153a8c0adc7f7e7c164",
+      "size": 2605
+    },
+    "frontend/src/components/Workspace/workspace.css": {
+      "sha256": "ae6d575040d92c727f86bd617d649884ed72ea3dd58ea7fc8fe93928d110bafb",
+      "size": 3822
+    },
+    "frontend/src/components/Workspace/Workspace.tsx": {
+      "sha256": "ac547f2f21ed2ba68c0bf3c32b2e92579d21d6f04317a861ac264b2951f059a7",
+      "size": 15581
+    },
+    "frontend/src/pages/AnalyticsDashboard.tsx": {
+      "sha256": "4cce7e0d3966bc1582fa59c7fae32bcbba3881eb8b1f413486a92dfac054b55d",
+      "size": 12289
+    },
+    "frontend/src/game/GameCanvas.css": {
+      "sha256": "2b6902d099f10a4b00da22df4c2e871cba8e58722de2f5da6f183b37358bb9f5",
+      "size": 2363
+    },
+    "frontend/src/game/GameCanvas.tsx": {
+      "sha256": "3023a05d10fbca383ab3bac2f4d13d5eba5b50a2ae895418d04d6aa5e09350e2",
+      "size": 7463
+    },
+    "frontend/public/index.html": {
+      "sha256": "618366fa1884c181f8e4fcd02585a63907036083e2ddaea428e762a99c5eae9a",
+      "size": 748
+    },
+    "plan/overview.md": {
+      "sha256": "f4589bdca10aa089a5a8fdea897c9e6da4825b2a007e0d9f4adcc184f37b505f",
+      "size": 2310
+    },
+    "shared/puzzles/puzzles.json": {
+      "sha256": "ca7b71c71a7a76b9f9dced494d19ab8e70a55b5381fed2b7452f9c9e52216e81",
+      "size": 76567
+    },
+    "shared/runtime/blockDefinitions.ts": {
+      "sha256": "366acc1425d3953cfff96b795bacee94a8684adb1bd23e81db477912c7cda62d",
+      "size": 9899
+    },
+    "shared/runtime/executionEngine.ts": {
+      "sha256": "e4eb120dacfb3d6f9f183a35ee7605f3c309d11254faf32a561dc08714429b08",
+      "size": 28622
+    },
+    "design/architecture.md": {
+      "sha256": "945a8b367053007ca0e6f388ccfbc0cfd22c96ecc85f32fcf537f5392d9bccd3",
+      "size": 9730
+    },
+    "design/ui_spec.md": {
+      "sha256": "5be48cff488e536e0ed8800a4cf88df8ac9eb83c2a7704c69ca9ca68c4cfd616",
+      "size": 5563
+    }
+  }
+}
