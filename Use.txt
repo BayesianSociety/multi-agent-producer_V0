@@ -8,3 +8,6 @@
   production grade Prompt for creating multi-agent workflow. Take into account that once the multi-agent is
   created, it will be provided with a file called Project_description.md, which will contain additional prompt of
   what particular software to produce. The multi-agent must be able to consume and ingest that file.
+  
+  
+  codex resume 019cf35b-5e2e-7a71-b891-be4e78d5bc9f
