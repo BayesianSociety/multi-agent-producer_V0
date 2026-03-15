@@ -1,0 +1,10 @@
+› Take a deep breath and think longer. Fully read two files: 01.Prompt.md and
+  02.Errors_structure_explained_solutions.md. Based on those two files, create and save a new file under the name
+  01.Prompt_V1.md.
+  Conserve as much from file 01.Prompt.md. Clean it up and make it consistent. Figure out what is important in a
+  professional design of a mulit-agent workflow and keep those parts. Additionally, strengthen the Prompt with
+  lessons learned from the mistakes in the 02.Errors_structure_explained_solutions.md file. Be very specific, do
+  not halucinate. Do not invent new unneccessary things. Use only those two files to prepare a rock solid,
+  production grade Prompt for creating multi-agent workflow. Take into account that once the multi-agent is
+  created, it will be provided with a file called Project_description.md, which will contain additional prompt of
+  what particular software to produce. The multi-agent must be able to consume and ingest that file.
